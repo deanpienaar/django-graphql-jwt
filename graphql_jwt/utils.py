@@ -39,7 +39,7 @@ def jwt_encode(payload, context=None):
         payload,
         jwt_settings.JWT_PRIVATE_KEY or jwt_settings.JWT_SECRET_KEY,
         jwt_settings.JWT_ALGORITHM,
-    ).decode('utf-8')
+    )
 
 
 def jwt_decode(token, context=None):
@@ -85,7 +85,7 @@ def get_credentials(request, **kwargs):
 def get_payload(token, context=None):
     try:
         payload = jwt_settings.JWT_DECODE_HANDLER(token, context)
-    except jwt.ExpiredSignature:
+    except jwt.ExpiredSignatureError:
         raise exceptions.JSONWebTokenExpired()
     except jwt.DecodeError:
         raise exceptions.JSONWebTokenError(_('Error decoding signature'))
